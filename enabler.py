@@ -1,4 +1,6 @@
 
+from logger import App_Logger
+
 class Medal_Tally:
 
     """
@@ -8,8 +10,11 @@ class Medal_Tally:
     2) country_year_enabler
     """
 
-    def __init__(self, df):
+    def __init__(self, df, log_file):
         self.df = df
+        self.log_file = log_file
+        self.log = App_Logger()
+
 
     def fetch_medal_tally(self,yr, cou):
 
@@ -20,6 +25,7 @@ class Medal_Tally:
         :return: medal_tally: dataframe
         """
         try:
+            self.log.log(self.log_file, " fetch_medal_tally method running ")  # log
             flag = 0
             if yr == "Overall" and cou == "Overall":
                 temp_df = self.df
@@ -45,6 +51,7 @@ class Medal_Tally:
             return medal_tally
 
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: "+str(e))  # log
             raise e
 
     def country_year_enabler(self):
@@ -54,12 +61,14 @@ class Medal_Tally:
         :return: countries, years: both are list
         """
         try:
+            self.log.log(self.log_file, " country_year_enabler method running ")  # log
             countries = sorted((self.df['region'].dropna().unique().tolist()))
             countries.insert(0,'Overall')
             years = sorted(self.df['Year'].unique().tolist())
             years.insert(0, 'Overall')
             return countries, years
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
 class Overall:
@@ -74,8 +83,10 @@ class Overall:
     5) sports_heatmap
     6) most_achivers
     """
-    def __init__(self, df):
+    def __init__(self, df, log_file):
         self.df = df
+        self.log_file = log_file
+        self.log = App_Logger()
 
     def top_statistic(self):
 
@@ -84,6 +95,7 @@ class Overall:
         :return: editions,host,sports,events,nations,athletes
         """
         try:
+            self.log.log(self.log_file, " top_statistic method running ")  # log
             # No. of times olympic held
             editions = self.df.Year.unique().shape[0] - 1
             # No. of city hosted olympic
@@ -98,6 +110,7 @@ class Overall:
             athletes = self.df.Name.unique().shape[0]
             return editions,host,sports,events,nations,athletes
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def nation_participation_every_year(self):
@@ -109,10 +122,12 @@ class Overall:
         :return: x,y
         """
         try:
+            self.log.log(self.log_file, " nation_participation_every_year method running ")  # log
             x = sorted(self.df['Year'].unique().tolist())
             y = [self.df[self.df['Year'] == i]['region'].unique().shape[0] for i in x]
             return x,y
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def events_every_year(self):
@@ -124,10 +139,12 @@ class Overall:
             :return: x,y
         """
         try:
+            self.log.log(self.log_file, " events_every_year method running ")  # log
             x = sorted(self.df['Year'].unique().tolist())
             y = [self.df[self.df['Year'] == i]['Event'].unique().shape[0] for i in x]
             return x, y
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def athletes_participation_every_year(self):
@@ -139,10 +156,12 @@ class Overall:
             :return: x,y
         """
         try:
+            self.log.log(self.log_file, " athletes_participation_every_year method running ")  # log
             x = sorted(self.df['Year'].unique().tolist())
             y = [self.df[self.df['Year'] == i]['Name'].unique().shape[0] for i in x]
             return x,y
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def sports_heatmap(self):
@@ -152,11 +171,13 @@ class Overall:
         :return: pt: pivot table
         """
         try:
+            self.log.log(self.log_file, " sports_heatmap method running ")  # log
             x = self.df.drop_duplicates(['Year','Sport','Event'])
             pt = x.pivot_table(index='Sport', columns='Year', values='Event', aggfunc='count').fillna(0).astype('int')
 
             return pt
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def most_achivers(self,sports):
@@ -168,6 +189,7 @@ class Overall:
         :return: kt: dataframe
         """
         try:
+            self.log.log(self.log_file, " most_achivers method running ")  # log
             temp_df = self.df.dropna(subset=['Medal'])
 
             if sports != 'Overall':
@@ -178,6 +200,7 @@ class Overall:
             kt.rename(columns={'Name_x': 'Total Medals', 'index': 'Name'}, inplace=True)
             return kt
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
 class CountryWise:
@@ -188,8 +211,10 @@ class CountryWise:
     2) sport_analysis_heatmap
     3) most_achivers_countrywise
     """
-    def __init__(self, df):
+    def __init__(self, df, log_file):
         self.df = df
+        self.log_file = log_file
+        self.log = App_Logger()
 
     def medal_tally(self, country):
 
@@ -199,11 +224,13 @@ class CountryWise:
         :return: temp_df: dataframe
         """
         try:
+            self.log.log(self.log_file, " medal_tally method running ")  # log
             temp_df = self.df.dropna(subset=['Medal']).drop_duplicates(['Team', 'Year', 'region', 'Team', 'Games', 'Event'])
             temp_df = temp_df[temp_df['region'] == country]
             temp_df = temp_df.groupby('Year').count()['Medal'].reset_index()
             return temp_df
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def sport_analysis(self, country):
@@ -214,11 +241,13 @@ class CountryWise:
         :return: heatmap: pivot table
         """
         try:
+            self.log.log(self.log_file, " sport_analysis method running ")  # log
             temp_df = self.df.dropna(subset=['Medal']).drop_duplicates(['Team', 'Year', 'region', 'Team', 'Games', 'Event'])
             temp_df = temp_df[temp_df['region'] == country]
             pt = temp_df.pivot_table(index='Sport', columns='Year', values='Medal', aggfunc='count').fillna(0)
             return pt
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def most_achivers_countrywise(self,country):
@@ -229,6 +258,7 @@ class CountryWise:
         :return: kt: pd.Dataframe
         """
         try:
+            self.log.log(self.log_file, " most_achivers_countrywise method running ")  # log
             temp_df = self.df.dropna(subset=['Medal'])
             temp_df = temp_df[temp_df['region'] == country]
             kt = temp_df['Name'].value_counts().reset_index().merge(self.df, left_on='index', right_on='Name', how='left')[
@@ -236,6 +266,7 @@ class CountryWise:
             kt.rename(columns={'Name_x': 'Total Medals', 'index': 'Name'}, inplace=True)
             return kt
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
 class AthletesWise:
@@ -248,8 +279,10 @@ class AthletesWise:
     4) male_female_compare
     """
 
-    def __init__(self,df):
+    def __init__(self,df,log_file):
         self.df=df
+        self.log_file = log_file
+        self.log = App_Logger()
 
     def age_distripution(self):
 
@@ -258,6 +291,7 @@ class AthletesWise:
         :return: [x1,x2,x3,x4] : list
         """
         try:
+            self.log.log(self.log_file, " age_distripution method running ")  # log
             temp_df = self.df.drop_duplicates(subset=['Name', 'Height', 'Weight', 'region'])
             x1 = temp_df['Age'].dropna()
             x2 = temp_df[temp_df['Gold'] == 1]['Age'].dropna()
@@ -266,6 +300,7 @@ class AthletesWise:
             return [x1,x2,x3,x4]
 
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def age_distribution_wrt_sport(self):
@@ -276,6 +311,7 @@ class AthletesWise:
         :return: sport_name: string
         """
         try:
+            self.log.log(self.log_file, " age_distribution_wrt_sport method running ")  # log
             temp_df = self.df.drop_duplicates(subset=['Name', 'Height', 'Weight', 'region'])
             sports = sorted(self.df['Sport'].unique().tolist())
             lt=[]
@@ -289,6 +325,7 @@ class AthletesWise:
             return lt, sport_name
 
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def height_weight_distribution(self,sport):
@@ -299,12 +336,14 @@ class AthletesWise:
         :return: fig: dataframe
         """
         try:
+            self.log.log(self.log_file, " height_weight_distribution method running ")  # log
             temp_df = self.df.drop_duplicates(subset=['Name', 'Height', 'Weight', 'region'])
             temp_df['Medal'].fillna('No Medal', inplace=True)
             temp_df = temp_df[temp_df['Sport'] == sport]
             # fig = sb.scatterplot(x=temp_df['Height'], y=temp_df['Weight'], hue=temp_df['Medal'], style=temp_df['Sex'], s=500)
             return temp_df
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e
 
     def male_female_compare(self):
@@ -314,10 +353,12 @@ class AthletesWise:
         :return: sex: dataframe
         """
         try:
+            self.log.log(self.log_file, " male_female_compare method running ")  # log
             temp_df = self.df.drop_duplicates(subset=['Name', 'Height', 'Weight', 'region', 'Year', 'Event'])
             male = temp_df[temp_df['Sex'] == 'M'].groupby('Year').count()['Sex'].reset_index()
             female = temp_df[temp_df['Sex'] == 'F'].groupby('Year').count()['Sex'].reset_index()
             sex = male.merge(female, how='left', on='Year').rename(columns={'Sex_x': 'Male', 'Sex_y': 'Female'}).fillna(0).astype('int')
             return sex
         except Exception as e:
+            self.log.log(self.log_file, " ERROR :: " + str(e))  # log
             raise e

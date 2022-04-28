@@ -1,0 +1,9 @@
+2022-04-28/17:25:38		 Starting App 
+2022-04-28/17:25:38		 DataProccessing Step!! 
+2022-04-28/17:25:40		 Successfully extract data!!! 
+2022-04-28/17:25:40		 proccessing  data!!! 
+2022-04-28/17:25:40		 returning filtered and clean data!!! 
+2022-04-28/17:25:40		 Successfully get the dataframe!! 
+2022-04-28/17:25:40		 Medal Tally Section 
+2022-04-28/17:25:40		 country_year_enabler method running 
+2022-04-28/17:25:40		 fetch_medal_tally method running 

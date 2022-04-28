@@ -1,0 +1,13 @@
+2022-04-28/17:20:06		 Starting App 
+2022-04-28/17:20:06		 DataProccessing Step!! 
+2022-04-28/17:20:07		 Successfully extract data!!! 
+2022-04-28/17:20:07		 proccessing  data!!! 
+2022-04-28/17:20:08		 returning filtered and clean data!!! 
+2022-04-28/17:20:08		 Successfully get the dataframe!! 
+2022-04-28/17:20:08		 Overall Analysis Section 
+2022-04-28/17:20:08		 top_statistic method running 
+2022-04-28/17:20:08		 nation_participation_every_year method running 
+2022-04-28/17:20:10		 events_every_year method running 
+2022-04-28/17:20:11		 athletes_participation_every_year method running 
+2022-04-28/17:20:11		 sports_heatmap method running 
+2022-04-28/17:20:11		 most_achivers method running 

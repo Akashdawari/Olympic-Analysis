@@ -1,0 +1,10 @@
+2022-04-28/17:22:07		 Starting App 
+2022-04-28/17:22:07		 DataProccessing Step!! 
+2022-04-28/17:22:08		 Successfully extract data!!! 
+2022-04-28/17:22:08		 proccessing  data!!! 
+2022-04-28/17:22:08		 returning filtered and clean data!!! 
+2022-04-28/17:22:08		 Successfully get the dataframe!! 
+2022-04-28/17:22:08		 Country-wise Analysis Section 
+2022-04-28/17:22:08		 medal_tally method running 
+2022-04-28/17:22:08		 sport_analysis method running 
+2022-04-28/17:22:09		 most_achivers_countrywise method running 
